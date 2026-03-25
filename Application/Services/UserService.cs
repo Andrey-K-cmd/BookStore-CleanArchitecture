@@ -8,11 +8,15 @@ namespace Application.Services
     {
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUserRepository _userRepository;
+        private readonly IJwtProvider _jwtProvider;
 
-        public UserService(IPasswordHasher passwordHasher, IUserRepository userRepository)
+        public UserService(IPasswordHasher passwordHasher, 
+            IUserRepository userRepository, 
+            IJwtProvider jwtProvider)
         {
             _passwordHasher = passwordHasher;
             _userRepository = userRepository;
+            _jwtProvider = jwtProvider;
         }
 
         public async Task<string> Login(string email, string password)
@@ -27,7 +31,9 @@ namespace Application.Services
                 return "Проверьте введенные данные";
             }
 
-            return "";
+            var token = _jwtProvider.GenerateTocken(user);
+
+            return token;
         }
 
         public async Task Register(string name, string email, string password)

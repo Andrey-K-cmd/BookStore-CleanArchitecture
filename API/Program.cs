@@ -12,6 +12,9 @@ namespace API
 
             var app = builder.Build();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.Run();
         }
     }
