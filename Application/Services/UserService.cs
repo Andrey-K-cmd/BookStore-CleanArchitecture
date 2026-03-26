@@ -24,7 +24,7 @@ namespace Application.Services
 
             var user = await _userRepository.GetByEmail(email);
 
-            var result = _passwordHasher.Verify(password, user.PaasswordHash);
+            var result = _passwordHasher.Verify(password, user.PasswordHash);
 
             if (result == false)
             {

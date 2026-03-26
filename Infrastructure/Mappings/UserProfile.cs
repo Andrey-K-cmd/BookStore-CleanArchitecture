@@ -10,7 +10,8 @@ namespace Infrastructure.Mappings
         {
             CreateMap<User, UserEntity>();
 
-            CreateMap<UserEntity, User>();
+            CreateMap<UserEntity, User>()
+            .ConstructUsing(src => User.Create(src.Id, src.Name, src.Email, src.PasswordHash).user);
         }
     }
 }

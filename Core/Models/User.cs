@@ -11,19 +11,19 @@ namespace Core.Models
         public Guid Id { get; }
         public string Name { get; } = string.Empty;
         public string Email { get; } = string.Empty;    
-        public string PaasswordHash { get; } = string.Empty;
+        public string PasswordHash { get; } = string.Empty;
 
         private User(Guid id, string name, string email, string paasswordHash)
         {
             Id = id;
             Name = name;
             Email = email;
-            PaasswordHash = paasswordHash;
+            PasswordHash = paasswordHash;
         }
 
         public static (User? user, string error) Create(Guid id, string name, 
             string email, string paasswordHash)
-        {
+        {   
             if (string.IsNullOrEmpty(name))
             {
                 return (null, "Имя должно быть указано");
