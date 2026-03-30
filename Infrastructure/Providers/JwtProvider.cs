@@ -22,7 +22,8 @@ namespace Infrastructure.Providers
 
             List<Claim> claims = new List<Claim>()
             {
-                new Claim("userId", user.Id.ToString())
+                new Claim("userId", user.Id.ToString()),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.ToString())
             };
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),

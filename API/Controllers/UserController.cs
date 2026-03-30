@@ -15,7 +15,7 @@ namespace API.Controllers
             _userService = userService;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterUserRequest request)
         {
             await _userService.Register(request.Name, request.Email, request.Password);
@@ -23,7 +23,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginUserRequest request)
         {
             var token = await _userService.Login(request.Email, request.Password);

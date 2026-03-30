@@ -8,10 +8,17 @@ namespace Infrastructure.Mappings
     {
         public UserProfile()
         {
-            CreateMap<User, UserEntity>();
+            CreateMap<User, UserEntity>()
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => (int)src.Role));
 
             CreateMap<UserEntity, User>()
-            .ConstructUsing(src => User.Create(src.Id, src.Name, src.Email, src.PasswordHash, (Role)src.RoleId).user);
+                .ConstructUsing(src => User.Create(
+                    src.Id,
+                    src.Name,
+                    src.Email,
+                    src.PasswordHash,
+                    (Role)src.RoleId
+                ).user!);
         }
     }
 }

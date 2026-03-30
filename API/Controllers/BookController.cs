@@ -17,7 +17,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult<List<BookResponse>>> GetBooks()
         {
             var books = await _bookService.GetAllBooks();
@@ -30,6 +30,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Guid>> CraeteBook([FromBody] BookRequest request)
         {
             var (bookId, error) = await _bookService.CreateBook(request);
@@ -43,6 +44,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Guid>> UpdateBook(Guid id, [FromBody] BookRequest request)
         {
             var (bookId, error) = await _bookService.UpdateBook(id, request);
@@ -56,6 +58,7 @@ namespace API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Guid>> DeleteBook(Guid id)
         {
             var bookId = await _bookService.DeleteBook(id);
