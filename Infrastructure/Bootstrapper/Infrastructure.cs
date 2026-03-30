@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Application.Services;
 using Core.Interfaces;
 using Infrastructure.Mappings;
 using Infrastructure.Providers;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -56,12 +54,7 @@ namespace Infrastructure.Bootstrapper
             services.AddScoped<IJwtProvider, JwtProvider>();
 
             services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IBookService, BookService>();
-
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             services.AddAutoMapper(c => c.AddProfile<UserProfile>());
 
