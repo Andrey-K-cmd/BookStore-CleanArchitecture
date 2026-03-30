@@ -40,7 +40,7 @@ namespace Application.Services
         {
             var hash = _passwordHasher.Generate(password);
 
-            var user = User.Create(Guid.NewGuid(), name, email, hash).user;
+            var user = User.Create(Guid.NewGuid(), name, email, hash, Role.User).user;
 
             await _userRepository.Add(user);
         }

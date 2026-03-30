@@ -8,6 +8,7 @@ namespace Infrastructure
     {
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<BookEntity> Books { get; set; }
+        public DbSet<RoleEntity> Roles { get; set; }
 
         public BookStoreDbContext(DbContextOptions<BookStoreDbContext> options)
                 : base(options)
@@ -17,6 +18,7 @@ namespace Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new BookConfiguration());
         }

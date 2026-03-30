@@ -1,11 +1,6 @@
 ﻿using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Configurations
 {
@@ -14,6 +9,20 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
             builder.HasKey(u => u.Id);
+
+            builder.HasOne<RoleEntity>()
+                .WithMany()
+                .HasForeignKey(u => u.RoleId)
+                .IsRequired();
+
+            builder.HasData(
+                new UserEntity 
+                { 
+                    Id = Guid.NewGuid(), Name = "Admin777", 
+                    Email = "qweasdzxc@gmail.com", PasswordHash = "$2a$11$VPHUgxmNEwBFvHCzQ/4O/eDZfmhzoy.sPtjbsD3oypMAldV9xnpm6", // string
+                    RoleId = 1
+                }
+                );
         }
     }
 }

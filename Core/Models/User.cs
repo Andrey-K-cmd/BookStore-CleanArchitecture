@@ -12,17 +12,19 @@ namespace Core.Models
         public string Name { get; } = string.Empty;
         public string Email { get; } = string.Empty;    
         public string PasswordHash { get; } = string.Empty;
+        public Role Role { get; }
 
-        private User(Guid id, string name, string email, string paasswordHash)
+        private User(Guid id, string name, string email, string paasswordHash, Role role)
         {
             Id = id;
             Name = name;
             Email = email;
             PasswordHash = paasswordHash;
+            Role = role;
         }
 
         public static (User? user, string error) Create(Guid id, string name, 
-            string email, string paasswordHash)
+            string email, string paasswordHash, Role role)
         {   
             if (string.IsNullOrEmpty(name))
             {
@@ -37,7 +39,7 @@ namespace Core.Models
                 return (null, "Пароль обязателен");
             }
 
-            var user = new User(id, name, email, paasswordHash);
+            var user = new User(id, name, email, paasswordHash, role);
 
             return (user, string.Empty);
         }
