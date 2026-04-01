@@ -1,8 +1,10 @@
-﻿namespace Application.Interfaces
+﻿using Application.Contracts.Users;
+
+namespace Application.Interfaces
 {
     public interface IUserService
     {
-        Task Register(string name, string email, string password);
-        Task<string> Login(string email, string password);
+        Task<string> Register(RegisterUserRequest request);
+        Task<(string Token, string Error)> Login(LoginUserRequest request);
     }
 }

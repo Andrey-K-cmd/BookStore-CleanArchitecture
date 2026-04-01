@@ -18,7 +18,7 @@ namespace Infrastructure.Mappings
                     src.Email,
                     src.PasswordHash,
                     (Role)src.RoleId
-                ).user!);
+                ));
         }
     }
 }

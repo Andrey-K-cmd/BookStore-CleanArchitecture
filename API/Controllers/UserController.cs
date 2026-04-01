@@ -18,7 +18,12 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody] RegisterUserRequest request)
         {
-            await _userService.Register(request.Name, request.Email, request.Password);
+            string error = await _userService.Register(request);
+
+            if (!string.IsNullOrEmpty(error))
+            {
+                return BadRequest(error);
+            }
 
             return Ok();
         }
@@ -26,7 +31,12 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginUserRequest request)
         {
-            var token = await _userService.Login(request.Email, request.Password);
+            var (token, error) = await _userService.Login(request);
+
+            if (!string.IsNullOrEmpty(error))
+            {
+                return BadRequest(error);
+            }
 
             Response.Cookies.Append("super-deper-cookie", token);
 

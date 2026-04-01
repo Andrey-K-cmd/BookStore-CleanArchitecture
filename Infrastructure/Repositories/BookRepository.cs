@@ -49,7 +49,7 @@ namespace Infrastructure.Repositories
 
             var books = bookEntities.Select(b => Book
             .Create(b.Id, b.Title, b.Author, b.PublishingHouse, 
-            b.PublishingYear, b.CountPages, b.Price, b.Binding).book).ToList();
+            b.PublishingYear, b.CountPages, b.Price, b.Binding)).ToList();
 
             return books;
         }

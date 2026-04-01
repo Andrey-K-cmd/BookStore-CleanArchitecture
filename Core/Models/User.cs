@@ -23,25 +23,11 @@ namespace Core.Models
             Role = role;
         }
 
-        public static (User? user, string error) Create(Guid id, string name, 
+        public static User Create(Guid id, string name, 
             string email, string paasswordHash, Role role)
         {   
-            if (string.IsNullOrEmpty(name))
-            {
-                return (null, "Имя должно быть указано");
-            }
-            else if (string.IsNullOrEmpty(email))
-            {
-                return (null, "Email должен бытть указан");
-            }
-            else if (string.IsNullOrEmpty(paasswordHash))
-            {
-                return (null, "Пароль обязателен");
-            }
 
-            var user = new User(id, name, email, paasswordHash, role);
-
-            return (user, string.Empty);
+            return new User(id, name, email, paasswordHash, role);
         }
     }
 }
