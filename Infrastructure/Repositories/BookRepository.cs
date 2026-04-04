@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+﻿using AutoMapper;
+using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -8,25 +9,17 @@ namespace Infrastructure.Repositories
     public class BookRepository : IBookRepository
     {
         private readonly BookStoreDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public BookRepository(BookStoreDbContext dbContext)
+        public BookRepository(BookStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<Guid> Create(Book book)
         {
-            var bookEntities = new BookEntity
-            {
-                Id = book.Id,
-                Title = book.Title,
-                Author = book.Author,
-                PublishingHouse = book.PublishingHouse,
-                PublishingYear = book.PublishingYear,
-                CountPages = book.CountPages,
-                Price = book.Price,
-                Binding = book.Binding
-            };
+            var bookEntities = _mapper.Map<BookEntity>(book);
 
             await _dbContext.Books.AddAsync(bookEntities);
             await _dbContext.SaveChangesAsync();
@@ -47,25 +40,39 @@ namespace Infrastructure.Repositories
             var bookEntities = await _dbContext.Books.
                 AsNoTracking().ToListAsync();
 
-            var books = bookEntities.Select(b => Book
-            .Create(b.Id, b.Title, b.Author, b.PublishingHouse, 
-            b.PublishingYear, b.CountPages, b.Price, b.Binding)).ToList();
+            return _mapper.Map<List<Book>>(bookEntities);
+        }
 
-            return books;
+        public async Task<List<Book>> GetByFilter(BookFilter bookFilter)
+        {
+            var query = _dbContext.Books.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(bookFilter.Title))
+                query = query.Where(b => b.Title.Contains(bookFilter.Title));
+
+            if (!string.IsNullOrWhiteSpace(bookFilter.Author))
+                query = query.Where(b => b.Author.Contains(bookFilter.Author));
+
+            if (bookFilter.MinPrice.HasValue)
+                query = query.Where(b => b.Price >= bookFilter.MinPrice);
+
+            if (!string.IsNullOrWhiteSpace(bookFilter.Binding))
+                query = query.Where(b => b.Binding.Contains(bookFilter.Binding));
+
+            var entities = await query.ToListAsync();
+
+            return _mapper.Map<List<Book>>(entities);
         }
 
         public async Task<Guid> Update(Book book)
         {
-            await _dbContext.Books
-                .Where(b => b.Id == book.Id)
-                .ExecuteUpdateAsync(s => s
-                .SetProperty(b => b.Title, b => book.Title)
-                .SetProperty(b => b.Author, b => book.Author)
-                .SetProperty(b => b.PublishingHouse, b => book.PublishingHouse)
-                .SetProperty(b => b.PublishingYear, b => book.PublishingYear)
-                .SetProperty(b => b.CountPages, b => book.CountPages)
-                .SetProperty(b => b.Price, b => book.Price)
-                .SetProperty(b => b.Binding, b => book.Binding));
+            var entity = await _dbContext.Books.FindAsync(book.Id);
+
+            if (entity != null)
+            {
+                _mapper.Map(book, entity);
+                await _dbContext.SaveChangesAsync();
+            }
 
             return book.Id;
         }

@@ -52,6 +52,17 @@ namespace Application.Services
             return await _bookRepository.GetAll();
         }
 
+        public async Task<List<Book>> GetBookByFilter(BookFilterRequest book)
+        {
+            var bookFilter = new BookFilter(
+                book.Title,
+                book.Author,
+                book.MinPrice,
+                book.Binding);
+
+            return await _bookRepository.GetByFilter(bookFilter);
+        }
+
         public async Task<(Guid BookId, string Error)> UpdateBook(Guid id, BookRequest bookRequest)
         {
             var validation = await _bookValidator.ValidateAsync(bookRequest);

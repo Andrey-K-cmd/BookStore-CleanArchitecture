@@ -7,6 +7,7 @@ namespace Core.Interfaces
         Task<Guid> Create(Book book);
         Task<Guid> Update(Book book);
         Task<List<Book>> GetAll();
+        Task<List<Book>> GetByFilter(BookFilter bookFilter);
         Task<Guid> Delete (Guid id);
     }
 }

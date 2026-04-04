@@ -6,6 +6,7 @@ namespace Application.Interfaces
     public interface IBookService
     {
         Task<List<Book>> GetAllBooks();
+        Task<List<Book>> GetBookByFilter(BookFilterRequest book);
         Task<(Guid BookId, string Error)> CreateBook(BookRequest book);
         Task<(Guid BookId, string Error)> UpdateBook(Guid id, BookRequest book);
         Task<Guid> DeleteBook(Guid bookId);

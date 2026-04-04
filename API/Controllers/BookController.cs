@@ -29,6 +29,18 @@ namespace API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("filter")]
+        [Authorize(Roles = "Admin, User")]
+        public async Task<ActionResult<List<BookFilterResponse>>> GetBookByFilter([FromQuery] BookFilterRequest request)
+        {
+            var books = await _bookService.GetBookByFilter(request);
+
+            var response = books.Select(b => new BookFilterResponse
+            (b.Title, b.Author, b.Price, b.Binding));
+
+            return Ok(response);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Guid>> CraeteBook([FromBody] BookRequest request)

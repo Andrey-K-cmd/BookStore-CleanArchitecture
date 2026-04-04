@@ -57,6 +57,7 @@ namespace Infrastructure.Bootstrapper
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddAutoMapper(c => c.AddProfile<UserProfile>());
+            services.AddAutoMapper(c => c.AddProfile<BookProfile>());
 
             return services;
         }

@@ -1,5 +1,4 @@
 ﻿using Application.Contracts.Users;
-using Application.Contracts.Validators;
 using Application.Interfaces;
 using Core.Interfaces;
 using Core.Models;
